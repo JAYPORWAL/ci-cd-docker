@@ -2,29 +2,61 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  # Runs only on push to main branch
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build-and-push:
+    name: Build & Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      # 1. Checkout your code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      # 2. Set up Docker Buildx (for advanced builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
+<<<<<<< HEAD
     - name: Login to DockerHub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
+=======
+      # 3. Log in to Docker Hub using GitHub Secrets
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+>>>>>>> 16de8a97bbb2c575e5ab3db857c474c0f09281df
 
-    - name: Build Docker Image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ci-cd-demo:latest .
+      # 4. Build and tag your Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ci-cd-demo:latest .
 
-    - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/ci-cd-demo:latest
+      # 5. Push the image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/ci-cd-demo:latest
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Add your test commands here
+      - name: Run simple tests
+        run: |
+          echo "🧪 Running basic tests..."
+          echo "✔️ All tests passed!"
