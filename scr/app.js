@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState } from "react";
-import "./App.css";
+import "./app.css";
 
 function App() {
   const [user, setUser] = useState({ username: "", password: "" });
