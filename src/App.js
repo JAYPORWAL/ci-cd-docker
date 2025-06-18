@@ -1,48 +1,65 @@
-// src/App.js
 import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-  const [username, setUsername] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // fake auth success
-    setIsAuthenticated(true);
+    setIsLoggedIn(true); // simulate login
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const toggleForm = () => {
+    setIsSignup(!isSignup);
+  };
+
+  if (isLoggedIn) {
+    return (
+      <div className="welcome-page">
+        <h1>🎉 Welcome to the React CI/CD App 🎉</h1>
+        <p className="quote">
+          “Code is like humor. When you have to explain it, it’s bad.”
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="app-container">
-      {!isAuthenticated ? (
-        <div className="form-container">
-          <h2>{isSignup ? "Sign Up" : "Sign In"}</h2>
-          <form onSubmit={handleSubmit}>
-            {isSignup && (
-              <input
-                type="text"
-                placeholder="Full Name"
-                required
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            )}
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
-            <button type="submit">{isSignup ? "Sign Up" : "Sign In"}</button>
-          </form>
-          <p onClick={() => setIsSignup(!isSignup)} className="toggle-link">
-            {isSignup
-              ? "Already have an account? Sign In"
-              : "Don't have an account? Sign Up"}
-          </p>
-        </div>
-      ) : (
-        <div className="welcome-container">
-          <h1>Welcome {username || "User"}! 🎉</h1>
-          <p>"Success usually comes to those who are too busy to be looking for it." – Henry David Thoreau</p>
-        </div>
-      )}
+    <div className="app">
+      <div className="login-container">
+        <h2>{isSignup ? "Sign Up" : "Login"}</h2>
+        <form onSubmit={handleSubmit} className="login-form">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">{isSignup ? "Sign Up" : "Login"}</button>
+        </form>
+        <p className="toggle-text">
+          {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
+          <span onClick={toggleForm} className="toggle-link">
+            {isSignup ? "Login" : "Sign Up"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
