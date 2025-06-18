@@ -27,4 +27,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: yourdockerhub/react-app:latest
+          tags: jayporwal3101/react-app:latest
