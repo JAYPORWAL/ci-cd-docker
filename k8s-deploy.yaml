@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: react-login
-          image: yourdockerhubusername/react-login-app:latest
+          image: jayporwal3101/react-login-app:latest
           ports:
             - containerPort: 3000
 ---
